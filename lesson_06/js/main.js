@@ -1,40 +1,44 @@
 'use strict';
-let money,  /* Спрашиваем “Ваш месячный доход?”*/
-    income = 'Фриланс',
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'), 
-    period = 7,
-    deposit = confirm('Есть ли у вас депозит в банке?'), /* Спрашиваем “Есть ли ...” и сохранить (булевое true/false) */
-    mission = 100000;
+let money,  /* Спрашиваем “Ваш месячный доход?”*/ 
+    start = function() {
+      do {
+        money = prompt('Ваш месячный доход?', 40000);
+        console.log(money);    
+      }
+      while (isNaN(money) || money == '' || money == null);
+    };
 
-let start = function() {
-  /* money = prompt('Ваш месячный доход?');
-  console.log(money); */
-  
-  /* while (isNaN(money) || money == '' || money == null) {
-    money = prompt('Ваш месячный доход?');
-    console.log(money);
-  } */
+  start();
 
-  do {
-    money = prompt('Ваш месячный доход?', 40000);
-    console.log(money);    
-  } while (isNaN(money) || money == '' || money == null);
-};
+let appData = {
+    income: {},     /* доп доход (объект)*/
+    addIconn: [],   /* перечислять доп доход (массив) */
+    expenses: {},   /* Объект с расходами */
+    addExpenses: [], /* Массив с расходами */
+    deposit: false,
+    mission: 50000,
+    period: 7,
+    asking: function(){
+      let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'); 
+          appData.addExpenses = addExpenses.toLowerCase().split(',');
+          appData.deposit = confirm('Есть ли у вас депозит в банке?');
 
-start();
-
-let expenses,    
-    expenses2;    
+    }
+};        
 
 let showTypeof = function(item) {   /* Функция типа данных */
   console.log(item, typeof item);
 };
 //showTypeof (money);
-showTypeof (income);
-showTypeof (deposit);
-    
-let expensesMonth = function() {
-  let sum = 0;
+showTypeof (appData.income);
+showTypeof (appData.deposit);
+
+
+let expenses,    
+    expenses2;
+
+let getexpensesMonth = function() {
+  let sum = 0, count;
 
   for(let i = 0; i < 2; i++) {
     if (i === 0) {
@@ -42,10 +46,11 @@ let expensesMonth = function() {
     } else {
       expenses2 = prompt('Какие обязательные ежемесячные расходы у вас есть?', "Ипотека Кредит");
     }
-    let count;  /* Заношу в переменную ответ для последующей валидации */
+    
     do {
-      count = prompt('Во сколько это обойдется?');
-    } while (isNaN(count) || count == '' || count == null);
+      count = prompt('Во сколько это обойдется?', 3000);
+    } 
+    while (isNaN(count) || count == '' || count == null);
     /* если ответ валиден - переводим count в тип Number */
     sum += +count;
   }
@@ -54,7 +59,7 @@ let expensesMonth = function() {
 
 };
 
-let expensesAmount = expensesMonth();
+let expensesAmount = getexpensesMonth();
 
 let accumulatedMonth = function() {
   return money - (expensesAmount);            /* Функция возвращает сумму за вычетом расходов */
@@ -69,7 +74,7 @@ let expensesPeroid = function() {
 };
 
 let incomePeriod = function() {
-  return budgetPeriod() - expensesPeroid();
+  return budgetPeriod() - expensesPeroid();   /* Расходы за период */
 };
 
 let budgetDay = function() {
@@ -83,7 +88,7 @@ let budgetDay = function() {
 };
 
 let targetMonth = function() {
-  let target = Math.ceil(mission / accumulatedMonth());
+  let target = Math.ceil(appData.mission / accumulatedMonth());
   if (target > 0) {
     return 'Цель будет достигнута за ' + target + ' месяцев';
   } else {
@@ -104,5 +109,7 @@ let getStatusIncome = function() {    /* Функция уровня доход�
 };
 
 //console.log('Накопления за период: ', expensesPeroid());
+console.log('Расходы за месяц: ' + expensesAmount);
+
 console.log(targetMonth());
 console.log(getStatusIncome());
