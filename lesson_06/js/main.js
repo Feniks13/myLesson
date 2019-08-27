@@ -11,14 +11,18 @@ let money,  /* Спрашиваем “Ваш месячный доход?”*/
   start();
 
 let appData = {
-    income: {},     /* доп доход (объект)*/
-    addIconn: [],   /* перечислять доп доход (массив) */
-    expenses: {},   /* Объект с расходами */
-    addExpenses: [], /* Массив с расходами */
+    income: {},         /* Cвойства объекта. доп доход (объект)*/
+    addIconn: [],       /* перечислять доп доход (массив) */
+    expenses: {},       /* Объект с расходами */
+    addExpenses: [],    /* Массив с расходами */
     deposit: false,
-    mission: 50000,
+    mission: 80000,
     period: 7,
-    asking: function(){
+    budget: money,
+    budgetDay: 0,
+    budgetMonth: 0,
+    expensesMonth: 0,
+    asking: function(){   /*  */
       let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'); 
           appData.addExpenses = addExpenses.toLowerCase().split(',');
           appData.deposit = confirm('Есть ли у вас депозит в банке?');
@@ -26,18 +30,19 @@ let appData = {
     }
 };        
 
-let showTypeof = function(item) {   /* Функция типа данных */
+console.log(appData.budget);
+
+/* let showTypeof = function(item) {  Функция типа данных *
   console.log(item, typeof item);
 };
 //showTypeof (money);
 showTypeof (appData.income);
-showTypeof (appData.deposit);
-
+showTypeof (appData.deposit); */
 
 let expenses,    
     expenses2;
 
-let getexpensesMonth = function() {
+let getExpensesMonth = function() {
   let sum = 0, count;
 
   for(let i = 0; i < 2; i++) {
@@ -59,7 +64,7 @@ let getexpensesMonth = function() {
 
 };
 
-let expensesAmount = getexpensesMonth();
+let expensesAmount = getExpensesMonth();
 
 let accumulatedMonth = function() {
   return money - (expensesAmount);            /* Функция возвращает сумму за вычетом расходов */
