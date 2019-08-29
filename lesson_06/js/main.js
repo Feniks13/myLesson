@@ -41,6 +41,7 @@ let appData = {
       }    
       return sum;    
     },
+
     getAccumulatedMonth: function() {
       return money - (appData.getExpensesMonth());            /* Функция возвращает сумму за вычетом расходов */
     },
@@ -67,10 +68,10 @@ let appData = {
       let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'); 
           appData.addExpenses = addExpenses.toLowerCase().split(',');
           appData.deposit = confirm('Есть ли у вас депозит в банке?');
-
     }
 };        
 
+let expensesAmount = appData.getExpensesMonth;
 console.log(appData.budget);
 
 /* let showTypeof = function(item) {  Функция типа данных *
