@@ -23,27 +23,10 @@ let appData = {
     budgetMonth: 0,
     expensesMonth: 0,
     getExpensesMonth: function() {
-      let sum = 0, count, expenses, expenses2;
-    
-      for(let i = 0; i < 2; i++) {
-        if (i === 0) {
-          expenses  = prompt('Какие обязательные ежемесячные расходы у вас есть?', "Квартплата Сади Еда");
-        } else {
-          expenses2 = prompt('Какие обязательные ежемесячные расходы у вас есть?', "Ипотека Кредит");
-        }
-        
-        do {
-          count = prompt('Во сколько это обойдется?', 3000);
-        } 
-        while (isNaN(count) || count == '' || count == null);
-        /* если ответ валиден - переводим count в тип Number */
-        sum += +count;
-      }    
-      return sum;    
+      
     },
-
     getAccumulatedMonth: function() {
-      return money - (appData.getExpensesMonth());            /* Функция возвращает сумму за вычетом расходов */
+      return money - (appData.expenses);            /* Функция возвращает сумму за вычетом расходов */
     },
     getTargetMonth: function() {
       let target = Math.ceil(appData.mission / appData.getAccumulatedMonth());
@@ -68,18 +51,29 @@ let appData = {
       let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'); 
           appData.addExpenses = addExpenses.toLowerCase().split(',');
           appData.deposit = confirm('Есть ли у вас депозит в банке?');
+      for (let i = 0; i < 2; i++) {
+        // Валидаця вводимых значений возвращает цену, если она валидна
+        let myCountPrice = function() {
+          let count;
+          do {
+            count = prompt('Во сколько это обойдется?', 3000);  
+          }
+          while (isNaN(count) || count == '' || count == null);
+          return count;
+        };
+        //При первой итерации задаём первый вопрос и записываем данные в объект expenses
+        if (i === 0) {
+          appData.expenses[prompt('Какие обязательные ежемесячные расходы у вас есть?', "Квартплата Садик Еда")] = myCountPrice();
+        //При второй итерации задаём второй вопрос и записываем данные в объект expenses
+        } else if (i === 1) {
+          appData.expenses[prompt('Какие обязательные ежемесячные расходы у вас есть?', "Ипотека Кредит")] = myCountPrice();
+        }
+      }
     }
 };        
 
 let expensesAmount = appData.getExpensesMonth;
 console.log(appData.budget);
-
-/* let showTypeof = function(item) {  Функция типа данных *
-  console.log(item, typeof item);
-};
-//showTypeof (money);
-showTypeof (appData.income);
-showTypeof (appData.deposit); */
 
 let budgetPeriod = function() {
   return money * appData.period;                      /* Накопления за период */
@@ -103,7 +97,8 @@ let budgetDay = function() {
   }
 };
 
-//console.log('Накопления за период: ', expensesPeroid());
+console.log('Накопления за период: ', expensesPeroid());
 console.log('Расходы за месяц: ' + appData.getExpensesMonth());
 console.log(appData.getTargetMonth());
 console.log(appData.getStatusIncome());
+console.log(appData.expenses);
