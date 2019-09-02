@@ -115,7 +115,7 @@ let appData = {
     expensesUpperCase: function() {
       for (let i = 0; i < appData.addExpenses.length; i++) {
         appData.addExpenses[i] = appData.addExpenses[i].charAt(0).toUpperCase() + appData.addExpenses[i].slice(1);
-      }
+      } 
     }
 };
 
@@ -143,6 +143,3 @@ console.log('Заработанно за период: ' + appData.calcSaveMoney
 console.log('Процент: ' + appData.percentDeposit);
 console.log('Вклад: ' + appData.moneyDeposit);
 console.log('Возможные расходы: ' + appData.addExpenses);
-
-
-
