@@ -11,7 +11,7 @@ function formatDate() {
         Mm: ('0' + date.getMinutes()).slice(-2),          /* Минуты */
         ss: ('0' + date.getSeconds()).slice(-2)            /* Секунды */
     };
-    return ourFormat.dd + ':' + ourFormat.mm + ':' + ourFormat.yyyy;
+    return ourFormat.hh + ':' + ourFormat.Mm + ':' + ourFormat.ss + ' ' + ourFormat.dd + ':' + ourFormat.mm + ':' + ourFormat.yyyy;
 } 
 time.textContent = formatDate(); /* В переменную возвращаем текст из функции */
 
