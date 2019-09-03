@@ -1,13 +1,25 @@
 'use strict';
-let money,  /* Спрашиваем “Ваш месячный доход?”*/ 
-    start = function() {
-      do {
-        money = prompt('Ваш месячный доход?', 40000);    
-      }
-      while (isNaN(money) || money == '' || money == null || money < 0);
-    };
-
-  start();
+let start = document.getElementById('start'),                                   /* Расчитать */
+    salaryAmount = document.querySelector('.salary-amount'),                    /* Месячный доход */
+    incomeTitle = document.querySelector('.income-title'),                      /* Доп Доход */ 
+    incomeAmount = document.querySelector('.income-amount'),                    /* Сумма доп дохода */
+    btnOne = document.getElementsByTagName('button')[0],                        /* + Доп доход*/
+    additional = document.querySelectorAll('.additional_income-item'),          /* Возможные доходы */
+    expensesTitle = document.querySelector('.expenses-title'),                  /* Обязательные расходы */
+    expensesAmount = document.querySelector('.expenses-amount'),                /* Сумма обязательных расходов */
+    btnTwo = document.getElementsByTagName('button')[1],                        /* + Обязательный расход */
+    addExpenses = document.querySelector('.additional_expenses-item'),          /* Возможные расходы  */
+    checkbox = document.querySelector('#deposit-check'),                        /* Депозит */
+    targetAmount = document.querySelector('.target-amount'),                    /* Цель */
+    periodSelect = document.querySelector('.period-select'),                    /* Период */
+    
+    budgetMonth = document.querySelector('.budget_month-value'),                /* Доход за месяц */
+    budgetDay = document.querySelector('.budget_day-value'),                    /* Дневной бюджет */
+    expensesMonth = document.querySelector('.expenses_month-value'),            /* Расход за месяц */
+    additionalIncome = document.querySelector('.additional_income-value'),      /* Возможные доходы */
+    additionalExpenses = document.querySelector('.additional_expenses-value'),  /* Возможные расходы */
+    incomePeriod = document.querySelector('.income_period-value'),              /* Накопления за период */
+    targetMonth = document.querySelector('.target_month-value');
 
 let appData = {
     income: {},         /* Cвойства объекта. доп доход (объект)*/
@@ -16,14 +28,32 @@ let appData = {
     addExpenses: [],    /* Массив с расходами */
     deposit: false,     /* Счёт в банке */
     percentDeposit: 0,  /* Процент депозита */
-    moneyDeposit: 0,   /* Сколько денег положенно на счёт */
+    moneyDeposit: 0,    /* Сколько денег положенно на счёт */
     mission: 80000,     /* Цель */
     period: 7,          /* Период достижения цели */
-    budget: money,      /* Месячный доход */
+    budget: 0,          /* Месячный доход */
     budgetDay: 0,       /* Расходы от чистой прибыли на день */
     budgetMonth: 0,     /* Чистая прибыль в месяц */
     expensesMonth: 0,
     budgetDayStr: '',   /* Все обязательные расходы за месяц */
+    start: function() {    
+      if (salaryAmount.value === '') {
+        alert('Ошибка! Поле "Месячный доход" должно быть заполненно');
+        return;
+      }
+      appData.budget = salaryAmount.value;
+      console.log('salaryAmount.value: ', salaryAmount.value);
+      
+
+      //appData.asking();               /* Объявляем свойство ascing */
+      //appData.getExpensesMonth();     /* Объявляем свойство getExpensesMonth */
+      //appData.getBudget();            /* Объявляем свойство getBudget */
+      //appData.getTargetMonth();       /* Объявляем свойство getTargetMonth - Период за который будет выполнена цель*/
+      //appData.getStatusIncome();      /* Объявляем свойство getStatusIncome - Уровень дохода*/
+      //appData.getInfoDeposit();
+      //appData.expensesUpperCase();
+      //includes();
+    },
     asking: function(){
 
       if (confirm('Если у вас дополнительный заработок?')) {
@@ -119,20 +149,17 @@ let appData = {
     }
 };
 
+start.addEventListener('click', appData.start);
+
+
+
 let includes = function() { 
   for ( let key in appData) {
     console.log('Наша программа включает в себя данные: ' + key + ' : ' + appData[key]);    
   }
 };
 
-appData.asking();               /* Объявляем свойство ascing */
-appData.getExpensesMonth();     /* Объявляем свойство getExpensesMonth */
-appData.getBudget();            /* Объявляем свойство getBudget */
-appData.getTargetMonth();       /* Объявляем свойство getTargetMonth - Период за который будет выполнена цель*/
-appData.getStatusIncome();      /* Объявляем свойство getStatusIncome - Уровень дохода*/
-appData.getInfoDeposit();
-appData.expensesUpperCase();
-includes();
+
 
 
 console.log('Расходы за месяц: ', appData.expensesMonth);
