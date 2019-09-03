@@ -143,3 +143,5 @@ console.log('Заработанно за период: ' + appData.calcSaveMoney
 console.log('Процент: ' + appData.percentDeposit);
 console.log('Вклад: ' + appData.moneyDeposit);
 console.log('Возможные расходы: ' + appData.addExpenses);
+
+
