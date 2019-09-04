@@ -60,7 +60,8 @@ let appData = {
       let data = document.querySelectorAll('.data input[type="text"]'); /* Все input */
       data.forEach(function(item) {                                     /* Делаем не активными input после нажатия Расчитать */
         item.setAttribute('disabled', 'disabled');
-      });
+      }); 
+      
     },
     showResult: function() {
       budgetMonth.value = appData.budgetMonth;                    /* Бюджет за месяц */
@@ -79,6 +80,12 @@ let appData = {
       let cloneExpensesItems = expensesItems[0].cloneNode(true);             /* Делаем копию блока */
       expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnTwo);  /* Вставляем перед кнопкой */
       expensesItems = document.querySelectorAll('.expenses-items');
+
+      /* Очистка инпута */
+      cloneExpensesItems.querySelectorAll('input').forEach(function(item) {
+      item.value = '';
+      });
+
       if (expensesItems.length === 3) {
         btnTwo.style.display = 'none';
       }
@@ -100,6 +107,12 @@ let appData = {
       let cloneIncomeItems = incomeItems[0].cloneNode(true);
       incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnOne);
       incomeItems = document.querySelectorAll('.income-items');
+
+      /* Очистка инпута */
+      cloneIncomeItems.querySelectorAll('input').forEach(function(item) {
+        item.value = '';
+        });
+
       if (incomeItems.length === 3) {
         btnOne.style.display = 'none';
       }
@@ -181,12 +194,12 @@ let appData = {
     calcSaveMoney: function() {                                  /* Сколько заработаем за период */
       return appData.budgetMonth * periodSelect.value;
     },
-    getPeriodValue: function() {
+    /* getPeriodValue: function() {
       let periodSelect = document.querySelector('.period-select'),
           periodAmount = document.querySelector('.period-amount');
       //console.log(periodSelect.value);
-      periodAmount.textContent = periodSelect.value;              /* Значение периода */
-    },
+      periodAmount.textContent = periodSelect.value;              /* Значение периода 
+    }, */
     expensesUpperCase: function() {
       for (let i = 0; i < appData.addExpenses.length; i++) {
         appData.addExpenses[i] = appData.addExpenses[i].charAt(0).toUpperCase() + appData.addExpenses[i].slice(1);
@@ -201,4 +214,31 @@ btnTwo.addEventListener('click', appData.addExpensesBlock);       /* Добав�
 /* Отлавливаем событие изменения range */
 periodSelect.addEventListener('input', (e) => {
   periodAmount.textContent = e.target.value;
-}); 
+});
+
+/* Ввод только русских букв */
+let inputPlaceName = document.querySelectorAll('input[placeholder="Наименование"]');
+inputPlaceName.forEach(function (item) {
+  item.addEventListener('input', function () {
+    let placeName = item.value,
+      rep = /^[a-z0-9]+$/i;
+    if (rep.test(placeName)) {
+      placeName = placeName.replace(rep, '');
+      item.value = placeName;
+    }
+  });
+});
+
+/* Ввод только цифр */
+let inputSum = document.querySelectorAll('input[placeholder="Сумма"]');
+inputSum.forEach(function (item) {
+  item.addEventListener('input', function () {
+    let placeSum = item.value,
+      rep = /[-\.;":'a-zA-Zа-яА-Я]/;
+    if (rep.test(placeSum)) {
+      placeSum = placeSum.replace(rep, '');
+      item.value = placeSum;
+    }
+  });
+});
+
