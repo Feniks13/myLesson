@@ -62,7 +62,7 @@ let appData = {
       cancel.style.display = 'block';   /* Стновиться видимой */
       let data = document.querySelectorAll('.data input[type="text"]'); /* Все input в блоке data */
       data.forEach(function(item) {                       /* Делаем не активными input после нажатия Расчитать */
-        item.setAttribute('disabled', 'disabled');
+        item.disabled = true;
       }); 
       
     },
@@ -210,20 +210,9 @@ let appData = {
     },
     reset: function() {
       inputAll.forEach( function(item) {
+        item.disabled = false;            /* Делаем поля активными */
         item.value = '';                  /* Пустые все input */
       });
-
-      /* for (let key in this) {
-        if (typeof this[key] !== 'function'){
-          if (isNaN(this[key])){
-            this[key] = '';
-          } 
-          else if (!isNaN(this[key])){
-            this[key] = 0;
-          }
-        }
-      } */
-      
 
       periodSelect.value = 0;
       periodAmount.textContent = 1;
