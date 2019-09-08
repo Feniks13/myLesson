@@ -57,7 +57,10 @@ let appData = {
       
       this.getBudget();              /* Вызываем функцию getBudget */
       this.showResult();
-      
+    
+      btnOne.style.display = 'none';
+      btnTwo.style.display = 'none';
+          
       start.style.display = 'none';     /* После нажатия на Расчитать - кнопка пропадает */
       cancel.style.display = 'block';   /* Стновиться видимой */
       let data = document.querySelectorAll('.data input[type="text"]'); /* Все input в блоке data */
@@ -92,6 +95,12 @@ let appData = {
       if (expensesItems.length === 3) {
         btnTwo.style.display = 'none';
       }
+
+      cancel.addEventListener('click', function(){    /* Отслеживаем событие клика по кнопке Сброс */
+        cloneExpensesItems.children[0].value = '';
+        cloneExpensesItems.children[1].value = '';
+        cloneExpensesItems.remove();
+      });
     },
     /* Получение Расходов */
     getExpenses: function() {
@@ -119,6 +128,12 @@ let appData = {
       if (incomeItems.length === 3) {
         btnOne.style.display = 'none';
       }
+          
+      cancel.addEventListener('click', function(){    /* Отслеживаем событие клика по кнопке Сброс */
+        cloneIncomeItems.children[0].value = '';
+        cloneIncomeItems.children[1].value = '';
+        cloneIncomeItems.remove();
+      });
 
     },
     /* Получение Доп дохода */
@@ -213,7 +228,10 @@ let appData = {
         item.disabled = false;            /* Делаем поля активными */
         item.value = '';                  /* Пустые все input */
       });
-
+      
+      btnOne.style.display = 'block';
+      btnTwo.style.display = 'block';
+      
       periodSelect.value = 0;
       periodAmount.textContent = 1;
       start.style.display = 'block';
@@ -256,4 +274,3 @@ inputSum.forEach(function (item) {
     }
   });
 });
-
