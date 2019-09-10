@@ -98,9 +98,9 @@ DomElement.prototype.getResult = function() {
   let elemD = document.querySelector('div'),
       elemP = document.querySelector('p');
   if (elemD !== 'null') {                   /* Поверяем ceotcndetn ли div */
-    elemD.style.cssText = 'height:' + this.height + 'px; width:' + this.width + 'px; background-color:' + this.bg + '; font-size:' + this.fontSize + 'px; text-align: center; padding: 10px; border-radius:10px;';
+    elemD.style.cssText = 'height:' + this.height + 'px; width:' + this.width + 'px; background-color:' + this.bg + '; font-size:' + this.fontSize + 'px; text-align: center; padding: 10px; border-radius:10px; position: absolute;';
   } else if (elemP !== 'null') {
-    elemP.style.cssText = 'height:' + this.height + 'px; width:' + this.width + 'px; background-color:' + this.bg + '; font-size:' + this.fontSize + 'px; text-align: center; padding: 10px; border-radius:10px;';
+    elemP.style.cssText = 'height:' + this.height + 'px; width:' + this.width + 'px; background-color:' + this.bg + '; font-size:' + this.fontSize + 'px; text-align: center; padding: 10px; border-radius:10px; position: absolute;';
   }
 };
 
@@ -112,18 +112,50 @@ DomElement.prototype.start = function() {
   domElement.getFontSize();
   domElement.getResult();
 };
+DomElement.prototype.move = function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    let figureD = document.querySelector('div'),
+        figureP = document.querySelector('p'),
+        left = 0,
+        right = 0,
+        top = 0,
+        down = 0;
+    if (figureD !== null) {
+      document.addEventListener('keydown', function(event) {
+        if (event.code == 'ArrowUp') {
+          top += 10;
+          figureD.style.top = top + 'px';
+          console.log('Вверх');         
+          console.log('top');         
+        } else if (event.code == 'ArrowRight') {
+          right += 10;
+          figureD.style.right = right + 'px';
+          console.log('Вправо');          
+        } else if (event.code == 'ArrowDown') {
+          down += 10;
+          figureD.style.down = down + 'px';
+          console.log('Вниз');          
+        } else if (event.code == 'ArrowLeft') {
+          left += 10;
+          figureD.style.left = left + 'px';
+          console.log('Влево');          
+        }
+      });
+      
+    } else if (figureP !== null) {
+      console.log('Это p');
+      
+    }    
+  
+    
+  });
+};
 
 const domElement = new DomElement();
+domElement.start();
+domElement.move();
 
 console.log(domElement);
-
-
-domElement.getSelector();
-domElement.getHeight();
-domElement.getWidth();
-domElement.getBg();
-domElement.getFontSize();
-domElement.getResult();
 
 
 
