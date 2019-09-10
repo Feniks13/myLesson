@@ -1,5 +1,5 @@
 'use strict';
-let body = document.querySelector('body');
+let body = document.querySelector('body');    
 
 const DomElement = function() {
   this.selector = '';
@@ -96,12 +96,14 @@ DomElement.prototype.getFontSize = function() {
 
 DomElement.prototype.getResult = function() {
   let elemD = document.querySelector('div'),
-      elemP = document.querySelector('p');
-  if (elemD !== 'null') {                   /* Поверяем ceotcndetn ли div */
+      elemP = document.querySelector('p');    
+  if (elemD) {                   /* Поверяем ceotcndetn ли div */
     elemD.style.cssText = 'height:' + this.height + 'px; width:' + this.width + 'px; background-color:' + this.bg + '; font-size:' + this.fontSize + 'px; text-align: center; padding: 10px; border-radius:10px; position: absolute;';
-  } else if (elemP !== 'null') {
+  } else if (elemP) {
     elemP.style.cssText = 'height:' + this.height + 'px; width:' + this.width + 'px; background-color:' + this.bg + '; font-size:' + this.fontSize + 'px; text-align: center; padding: 10px; border-radius:10px; position: absolute;';
   }
+  console.log('D', elemD);
+  console.log('P', elemP);
 };
 
 DomElement.prototype.start = function() {
@@ -114,40 +116,52 @@ DomElement.prototype.start = function() {
 };
 DomElement.prototype.move = function() {
   document.addEventListener('DOMContentLoaded', function() {
-    let figureD = document.querySelector('div'),
-        figureP = document.querySelector('p'),
+    let elemD = document.querySelector('div'),
+        elemP = document.querySelector('p'),
         left = 0,
-        right = 0,
-        top = 0,
-        down = 0;
-    if (figureD !== null) {
+        top = 0;
+    if (elemD) {
       document.addEventListener('keydown', function(event) {
         if (event.code == 'ArrowUp') {
-          top += 10;
-          figureD.style.top = top + 'px';
+          top -= 10;
+          elemD.style.top = top + 'px';
           console.log('Вверх');         
-          console.log('top');         
         } else if (event.code == 'ArrowRight') {
-          right += 10;
-          figureD.style.right = right + 'px';
+          left += 10;
+          elemD.style.left = left + 'px';
           console.log('Вправо');          
         } else if (event.code == 'ArrowDown') {
-          down += 10;
-          figureD.style.down = down + 'px';
+          top += 10;
+          elemD.style.top = top + 'px';
           console.log('Вниз');          
         } else if (event.code == 'ArrowLeft') {
-          left += 10;
-          figureD.style.left = left + 'px';
+          left -= 10;
+          elemD.style.left = left + 'px';
           console.log('Влево');          
         }
       });
       
-    } else if (figureP !== null) {
-      console.log('Это p');
-      
+    } else if (elemP) {
+      document.addEventListener('keydown', function(event) {
+        if (event.code == 'ArrowUp') {
+          top -= 10;
+          elemP.style.top = top + 'px';
+          console.log('Вверх');         
+        } else if (event.code == 'ArrowRight') {
+          left += 10;
+          elemP.style.left = left + 'px';
+          console.log('Вправо');          
+        } else if (event.code == 'ArrowDown') {
+          top += 10;
+          elemP.style.top = top + 'px';
+          console.log('Вниз');          
+        } else if (event.code == 'ArrowLeft') {
+          left -= 10;
+          elemP.style.left = left + 'px';
+          console.log('Влево');          
+        }
+      });
     }    
-  
-    
   });
 };
 
@@ -156,6 +170,7 @@ domElement.start();
 domElement.move();
 
 console.log(domElement);
+console.log('body', body);
 
 
 
