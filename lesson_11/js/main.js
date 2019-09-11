@@ -315,7 +315,10 @@ depositCheck.addEventListener('change', () => {
       let selectIndex = this.options[this.selectedIndex].value;
       if (selectIndex === 'other') {
         depositPercent.style.display = 'inline-block';
-        depositPercent.Value = '';
+        depositPercent.value = '';
+        if (depositPercent.value == ''){
+          depositPercent.value = '0.01';
+        } 
         depositPercent.disabled = false;
       } else {
         depositPercent.style.display = 'none';
