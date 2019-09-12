@@ -1,37 +1,36 @@
-'use strict';
-let start = document.getElementById('start'),                                   /* Расчитать */
-    cancel = document.querySelector('#cancel'),                                 /* Сбросить */
-    salaryAmount = document.querySelector('.salary-amount'),                    /* Месячный доход */
-    incomeTitle = document.querySelector('.income-title'),                      /* Доп Доход */ 
-    incomeItems = document.querySelectorAll('.income-items'),                   /* Вместо доп доходов */
-    //incomeAmount = document.querySelector('.income-amount'),                  /* Сумма доп дохода */
-    btnOne = document.getElementsByTagName('button')[0],                        /* + Доп доход*/
-    additional = document.querySelectorAll('.additional_income-item'),          /* Возможные доходы */
-    expensesTitle = document.querySelector('.expenses-title'),                  /* Обязательные расходы */
-    incomeItem = document.querySelectorAll('.income-items'),
-    expensesItems = document.querySelectorAll('.expenses-items'),               /* Вместо обязательных расходов */
-    //expensesAmount = document.querySelector('.expenses-amount'),              /* Сумма обязательных расходов */
-    btnTwo = document.getElementsByTagName('button')[1],                        /* + Обязательный расход */
-    addExpensesItem = document.querySelector('.additional_expenses-item'),      /* Возможные расходы  */
-    depositCheck = document.querySelector('#deposit-check'),                        /* Депозит */
-    depositBank = document.querySelector('.deposit-bank'),                          /* Список банков */
-    depositAmount = document.querySelector('.deposit-amount'),                      /* Input с сумой */
-    depositPercent = document.querySelector('.deposit-percent'),                      /* Input с процентами */
-    targetAmount = document.querySelector('.target-amount'),                    /* Цель */
-    periodSelect = document.querySelector('.period-select'),
-    periodAmount = document.querySelector('.period-amount'),                    /* Период */
-    data = document.querySelector('.data'),                                     /* Блок data */
-    inputData = data.querySelectorAll('input[type="text"]'),                    /* Все input в блоке data */
-    inputAll = document.querySelectorAll('input'),                               /* Все input */
-    
-    budgetMonth = document.querySelector('.budget_month-value'),                /* Доход за месяц */
-    budgetDay = document.querySelector('.budget_day-value'),                    /* Дневной бюджет */
-    expensesMonth = document.querySelector('.expenses_month-value'),            /* Расход за месяц */
-    additionalIncome = document.querySelector('.additional_income-value'),      /* Возможные доходы */
-    additionalExpenses = document.querySelector('.additional_expenses-value'),  /* Возможные расходы */
-    incomePeriod = document.querySelector('.income_period-value'),              /* Накопления за период */
-    targetMonth = document.querySelector('.target_month-value');                /* Срок достижения цели */
+'uconst  strict';
+const start = document.getElementById('start');                                   /* Расчитать */
+const cancel = document.querySelector('#cancel');                                 /* Сбросить */
+const salaryAmount = document.querySelector('.salary-amount');                    /* Месячный доход */
+const incomeTitle = document.querySelector('.income-title');                      /* Доп Доход */ 
+let incomeItems = document.querySelectorAll('.income-items');                   /* Вместо доп доходов */
+//incomeAmount = document.querySelector('.income-amount');                  /* Сумма доп дохода */
+const btnOne = document.getElementsByTagName('button')[0];                        /* + Доп доход*/
+const additional = document.querySelectorAll('.additional_income-item');          /* Возможные доходы */
+const expensesTitle = document.querySelector('.expenses-title');                  /* Обязательные расходы */
+let expensesItems = document.querySelectorAll('.expenses-items');               /* Вместо обязательных расходов */
+//expensesAmount = document.querySelector('.expenses-amount');              /* Сумма обязательных расходов */
+const btnTwo = document.getElementsByTagName('button')[1];                        /* + Обязательный расход */
+const addExpensesItem = document.querySelector('.additional_expenses-item');      /* Возможные расходы  */
+const depositCheck = document.querySelector('#deposit-check');                        /* Депозит */
+const depositBank = document.querySelector('.deposit-bank');                          /* Список банков */
+const depositAmount = document.querySelector('.deposit-amount');                      /* Input с сумой */
+const depositPercent = document.querySelector('.deposit-percent');                      /* Input с процентами */
+const depositCalc = document.querySelector('.deposit-calc');
+const targetAmount = document.querySelector('.target-amount');                    /* Цель */
+const periodSelect = document.querySelector('.period-select');
+const periodAmount = document.querySelector('.period-amount');                    /* Период */
+const data = document.querySelector('.data');                                     /* Блок data */
+const inputData = data.querySelectorAll('input[type="text"]');                    /* Все input в блоке data */
+const inputAll = document.querySelectorAll('input');                               /* Все input */
 
+const budgetMonth = document.querySelector('.budget_month-value');                /* Доход за месяц */
+const budgetDay = document.querySelector('.budget_day-value');                    /* Дневной бюджет */
+const expensesMonth = document.querySelector('.expenses_month-value');            /* Расход за месяц */
+const additionalIncome = document.querySelector('.additional_income-value');      /* Возможные доходы */
+const additionalExpenses = document.querySelector('.additional_expenses-value');  /* Возможные расходы */
+const incomePeriod = document.querySelector('.income_period-value');              /* Накопления за период */
+const targetMonth = document.querySelector('.target_month-value');                /* Срок достижения цели */
 
 const AppData = function () {
   this.income = {};         /* Cвойства объекта. доп доход (объект)*/
@@ -73,7 +72,10 @@ AppData.prototype.start = function() {
   let data = document.querySelectorAll('.data input[type="text"]'); /* Все input в блоке data */
   data.forEach(function(item) {                       /* Делаем не активными input после нажатия Расчитать */
     item.disabled = true;
-  });  
+  });
+  periodSelect.disabled = true;
+  depositBank.disabled = true;
+  depositCheck.disabled = true;
 };
 
 AppData.prototype.showResult = function() {
@@ -83,8 +85,7 @@ AppData.prototype.showResult = function() {
   additionalExpenses.value = this.addExpenses.join(', ');
   additionalIncome.value = this.addIncome.join(', ');
   targetMonth.value = Math.ceil(this.getTargetMonth());
-  incomePeriod.value = this.calcSaveMoney();
-  
+  incomePeriod.value = this.calcSaveMoney();  
 };
 
 /* Добавляем блок с доп доходом */
@@ -162,23 +163,21 @@ AppData.prototype.getExpenses = function() {
 
 /* Добавление расходов */
 AppData.prototype.getAddExpenses = function() {
-  const _this = this;   /* Создадис псевдо this */
   let addExpenses = addExpensesItem.value.split(','); /* Получим и запишем в массив */
-  addExpenses.forEach(function(item){
+  addExpenses.forEach((item) =>{
     item = item.trim();
     if (item !== '') {
-      _this.addExpenses.push(item);
+      this.addExpenses.push(item);
     }
   });
 };
 
 /* Добавление доп доходов */
 AppData.prototype.getAddIncome = function() {
-  const _this = this;   /* Создадис псевдо this */
-  additional.forEach(function(item) {
+  additional.forEach((item) => {
     let itemValue = item.value.trim();    /* Убираем все пробелы у слова */
     if (itemValue !== '') {
-      _this.addIncome.push(itemValue);
+      this.addIncome.push(itemValue);
     }
   });
 };
@@ -192,7 +191,7 @@ AppData.prototype.getExpensesMonth = function() {
 
 AppData.prototype.getBudget = function() {
   /* Месячный доход - месячный расход */
-  this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + (this.moneyDeposit * this.percentDeposit)/12;
+  this.budgetMonth =Math.ceil(this.budget + this.incomeMonth - this.expensesMonth + (this.moneyDeposit * this.percentDeposit)/12);
   /* Бюджет на день */
   this.budgetDay = Math.floor(this.budgetMonth / 30);
 };
@@ -216,13 +215,8 @@ AppData.prototype.getStatusIncome = function() {
 
 AppData.prototype.getInfoDeposit = function() {
   if (depositCheck) {
-    do {
-      this.percentDeposit = depositPercent.value;       
-    } while (isNaN(this.percentDeposit) || this.percentDeposit == ' ' || this.percentDeposit == '' || this.percentDeposit == null || this.percentDeposit < 0);
-
-    do {
-      this.moneyDeposit = depositAmount.value;          
-    } while (isNaN(this.moneyDeposit) || this.moneyDeposit == ' ' || this.moneyDeposit == '' || this.moneyDeposit == null || this.moneyDeposit < 0);
+    this.percentDeposit = depositPercent.value; 
+    this.moneyDeposit = depositAmount.value;          
   }
 };
 
@@ -264,6 +258,15 @@ AppData.prototype.reset = function() {
   periodAmount.textContent = 1;
   start.style.display = 'block';
   cancel.style.display = 'none';
+  depositBank.disabled = false;
+
+  if (depositCheck.checked){
+    depositBank.style.display = 'none';
+    depositAmount.style.display = 'none';
+    depositCalc.style.display = 'none'; 
+    depositAmount.value = '';
+    depositCheck.checked = false;
+  }  
 };
 
 AppData.prototype.validation = function() {
@@ -306,33 +309,33 @@ AppData.prototype.eventListeners = function() {
   });
 
   /* Проверяем депозит */
-depositCheck.addEventListener('change', () => {
-  if (depositCheck.checked) {     /* Если галочка поставлена */    
-    depositBank.style.display = 'inline-block';
-    depositAmount.style.display = 'inline-block';
-    this.deposit = true;
-    depositBank.addEventListener('change', function () {
-      let selectIndex = this.options[this.selectedIndex].value;
-      if (selectIndex === 'other') {
-        depositPercent.style.display = 'inline-block';
-        depositPercent.value = '';
-        if (depositPercent.value == ''){
-          depositPercent.value = '0.01';
-        } 
-        depositPercent.disabled = false;
-      } else {
-        depositPercent.style.display = 'none';
-        depositPercent.value = selectIndex;
-      }
-      
-    });
-  } else {
-    depositBank.style.display = 'none';
-    depositAmount.style.display = 'none'; 
-    depositAmount.value = '';
-    this.deposit = false;    
-  }
-});
+  depositCheck.addEventListener('change', function () {
+    
+    if (depositCheck.checked) {     /* Если галочка поставлена */          
+      depositBank.style.display = 'inline-block';      
+      depositAmount.style.display = 'inline-block';
+      depositCalc.style.display = 'block';
+      this.deposit = true;
+      depositBank.addEventListener('change', function () {
+        let selectIndex = this.options[this.selectedIndex].value;
+        if (selectIndex === 'other') {
+          depositPercent.style.display = 'inline-block';
+          depositPercent.value = '0.00'; 
+          depositPercent.disabled = false;
+        } else {
+          depositPercent.style.display = 'none';
+          depositPercent.value = selectIndex;
+        }
+        
+      });
+    } else {
+      depositBank.style.display = 'none';
+      depositAmount.style.display = 'none';
+      depositCalc.style.display = 'none';
+      depositAmount.value = '';
+      this.deposit = false;    
+    }
+  });
   
 };
 
