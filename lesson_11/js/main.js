@@ -57,10 +57,8 @@ AppData.prototype.start = function() {
   this.getExpenses();      
   this.getIncome();
   this.getExpensesMonth();       /* Вызываем функцию getExpensesMonth */
-  this.getAdd('additional', false);
-  this.getAdd('addExpensesItem', true);
-  //this.getAddExpenses();
-  //this.getAddIncome();
+  this.getAdd(addExpensesItem, this.addExpenses, true);
+  this.getAdd(additional, this.addIncome, false);
   this.getInfoDeposit();
   
   this.getBudget();              /* Вызываем функцию getBudget */
@@ -139,27 +137,25 @@ AppData.prototype.getExpenses = function() {
 };
 
 /* Добавление расходов и доходов */
-AppData.prototype.getAdd = function(inform, itemsBool) {
-  if (itemsBool === true) {
-    inform = inform.value.split(',');
-    inform.forEach((item) => {
-      let itemValue = item.value.trim();     
+AppData.prototype.getAdd = (addItems, arrAdd, split) => {
+  let itemAdd;
+
+    if (split) {
+      itemAdd = addItems.value.split(',');
+    } else {
+      itemAdd = addItems;
+    }
+
+    itemAdd.forEach((item) => {
+      let itemValue = split === true ? item.trim() : item.value.trim();
       if (itemValue !== '') {
-        this.inform.push(itemValue);
+        arrAdd.push(itemValue);
       }
     });
-  } else {
-    inform.forEach((item) => {
-      let itemValue = item.value.trim();     
-      if (itemValue !== '') {
-        this.inform.push(itemValue);
-      }
-    });
-  }
-};  
+};
 /* Добавление расходов */
-AppData.prototype.getAddExpenses = function() {
-  let addExpenses = addExpensesItem.value.split(','); /* Получим и запишем в массив */
+AppData.prototype.getAddExpenses = function() {  
+  let addExpenses = addExpensesItem.value.split(','); /* Получим и запишем в массив */  
   addExpenses.forEach((item) =>{
     item = item.trim();
     if (item !== '') {
@@ -169,11 +165,11 @@ AppData.prototype.getAddExpenses = function() {
 };
 
 /* Добавление доп доходов */
-AppData.prototype.getAddIncome = function() {
+AppData.prototype.getAddIncome = function() {  
   additional.forEach((item) => {
-    let itemValue = item.value.trim();    /* Убираем все пробелы у слова */
-    if (itemValue !== '') {
-      this.addIncome.push(itemValue);
+    item = item.value.trim();    /* Убираем все пробелы у слова */
+    if (item !== '') {
+      this.addIncome.push(item);
     }
   });
 };
