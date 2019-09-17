@@ -1,6 +1,17 @@
 'use strict';
 
-/* let getMes = (name)=>{
+setTimeout(() => {
+  console.log('Сообщение ЧЕРЕЗ 3 секунды');
+  
+}, 3000);
+
+setInterval(() => {
+  console.log('Сообщение КАЖДЫЕ 2 секунды');
+  
+}, 2000);
+
+
+let getMes = (name)=>{
   console.log(`Привет ${name}!`);
   
 };
@@ -10,16 +21,16 @@ let idInterval = setInterval(getMes, 2000, 'Василий');
 setTimeout(() => {
   clearInterval(idInterval);
   
-}, 5000); */
+}, 5000);
 
-/* let i = 0;
+let i = 0;
 setInterval(() => {
   i++;
   //console.log(`Hello ${i}`);
   
-}, 2000); */
+}, 2000);
 
-/* let air = document.querySelector('.airplane'),
+let air = document.querySelector('.airplane'),
     worm = document.querySelector('.worm'),
     count = 0,
     flyInterval;
@@ -38,7 +49,7 @@ let wormDown = () => {
   console.log(count);  
 };
 
-flyInterval = requestAnimationFrame(wormDown); */
+flyInterval = requestAnimationFrame(wormDown);
 
 let date = new Date();
 console.log(date);
