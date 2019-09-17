@@ -42,10 +42,10 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         clearInterval(timers);
 
         setInterval(() => {
-          timerBlock.style.color = 'white';
+          timerBlock.style.color = 'white';  // Мигание
         }, 1000);
         setInterval(() => {
-          timerBlock.style.color = `red`;
+          timerBlock.style.color = `red`;    // Мигание
         }, 2000);
       }
     }
