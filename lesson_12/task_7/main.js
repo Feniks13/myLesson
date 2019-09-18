@@ -1,59 +1,46 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  let timerTimeOfDay = document.querySelector('#timer-timeDay'),
-      timerDay = document.querySelector('#timer-day').childNodes[1],
-      timerTime = document.querySelector('#timer-time').childNodes[1],
-      timerNewYear = document.querySelector('#timer-newYear').childNodes[1],
-      weekDay = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+  let date = new Date(),
+      newYear = new Date('31 december 2019 23:59:59').getTime(),
+      dateNow = new Date().getTime(),
+      hours = date.getHours(),
+      dayWeek = date.getDay(),
+      timeDay = document.querySelector('#timer-timeDay'),
+      timerDay = document.querySelector('#timer-day'),
+      timeTime = document.querySelector('#timer-time'),
+      timerNewYear = document.querySelector('#timer-newYear'),
+      dateRemained = Math.floor((newYear - dateNow) / 1000 / 60 / 60 / 24),
+      arrWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
-      date = new Date(),              // Текущая дата
-      day = date.getDay() - 1;        // День недели
-  
-      
-  // Вывод данных
-  function setTime() {    
-    // Вывод дня
-    for (let i = 0; i < weekDay.length; i++) {
-      if (day == i) {
-        timerDay.textContent = weekDay[i];    
-      } 
+
+  function showInfo() {
+    if (hours <= 6) {
+      timeDay.textContent = `Доброй Ночи!`;
+    } else if (hours > 6 && hours <= 12) {
+      timeDay.textContent = `Доброго Утра!`;
+    } else if (hours > 12 && hours <= 18) {
+      timeDay.textContent = `Доброго Дня!`;
+    } else {
+      timeDay.textContent = `Доброго Вечера!`;
     }
-    
-    //Вывод времени
-    let clock = date.toLocaleTimeString('en');
-    timerTime.textContent = clock;
 
-    // Вывод пожелания
-    let p = [...clock];
-    console.log(p);
-            
-    if (p[8] == 'P' || p[9] == 'P'){
-      console.log(`Время: PM`);
-      
-      if (p[0] > 0 && p[0] <= 6 ) {
-        timerTimeOfDay.textContent = `Добрый день`;
-      } else if (p[0] > 6 && p[0] <= 12) {
-        timerTimeOfDay.textContent = `Добрый вечер`;
-      }
-    } else if (p[8] == 'A' || p[9] == 'A'){
-      console.log(`AM`);
-      
-      if (p[0] > 0 && p[0] <= 6 ) {
-        timerTimeOfDay.textContent = `Доброй ночи`;
-      } else if (p[0] > 6 && p[0] <= 12) {
-        timerTimeOfDay.textContent = `Доброго утра`;
-      }
+    timerDay.textContent = `Сегодня: ${arrWeek[dayWeek - 1]}`;
+
+    timeTime.textContent = `Текущее время: ${date.toLocaleTimeString('en')}`;
+
+    let day;
+    console.log(typeof(dateRemained));
+    let str = dateRemained.toString().slice(-1),
+        str2 = dateRemained.toString().slice(-2);    
+    
+    if (str > '1' && str <= '4') {
+      day = `дня`;
+    } else if (str > '4' && str <= '9' || str == '0' || str2 >= '11' && str2 <= '14') {
+      day = `дней`;
     }
+    timerNewYear.textContent = `До нового года осталось: ${dateRemained} ${day}`;
   }
+showInfo();
 
-  function countTimer(deadlin) {
-    let dateStop = new Date(deadlin).getTime(),
-        dateNow = date.getTime(),
-        dateEnd = Math.floor ((dateStop - dateNow) / 1000 / 60 / 60 / 24 );
-    
-    timerNewYear.textContent = dateEnd;    
-  }
-  countTimer('31 december 2019 23:59:59');
-  setTime();
 });
