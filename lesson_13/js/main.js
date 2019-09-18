@@ -2,27 +2,26 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   'use strict';
   
   // Таймер
-  function countTimer(deadline) {                             // deadlin - время до которого будет отсчитывать таймер
-    let timerHours = document.querySelector('#timer-hours'),       // Текущий Час
-        timerMinute = document.querySelector('#timer-minutes'),    // Текущая минута
-        timerSeconds = document.querySelector('#timer-seconds'),   // Текущая секунда
-        timerDay = document.querySelector('#timer-day');
+  const countTimer = (deadline) => {                             // deadlin - время до которого будет отсчитывать таймер
+    const timerHours = document.querySelector('#timer-hours'),       // Текущий Час
+      timerMinute = document.querySelector('#timer-minutes'),    // Текущая минута
+      timerSeconds = document.querySelector('#timer-seconds'),   // Текущая секунда
+      timerDay = document.querySelector('#timer-day');
     // Функция вычисления
-    function getTimeRemaining() {                                  
-      let dateStop = new Date(deadline).getTime(),                 // Дата дедлайна. в миллисекундах
-          dateNow = new Date().getTime(),                          // Текущая дата. в миллисекундах  
-          timeRemaining = (dateStop - dateNow) / 1000,             // Сколько осталось в секундах
-          seconds = Math.floor(timeRemaining % 60),
-          minutes = Math.floor((timeRemaining / 60) % 60),
-          hours = Math.floor((timeRemaining / 60 / 60) % 24),
-          day = Math.floor((timeRemaining / 60 / 60 / 24));
-          return {timeRemaining, day, hours, minutes, seconds};          // Возвращаем полученные данные
-    }
+    const getTimeRemaining = () => {                                  
+      const dateStop = new Date(deadline).getTime(),                 // Дата дедлайна. в миллисекундах
+        dateNow = new Date().getTime(),                          // Текущая дата. в миллисекундах  
+        timeRemaining = (dateStop - dateNow) / 1000,             // Сколько осталось в секундах
+        seconds = Math.floor(timeRemaining % 60),
+        minutes = Math.floor((timeRemaining / 60) % 60),
+        hours = Math.floor((timeRemaining / 60 / 60) % 24),
+        day = Math.floor((timeRemaining / 60 / 60 / 24));
+      return {timeRemaining, day, hours, minutes, seconds};          // Возвращаем полученные данные
+    };
 
     // Вывод данных на страницу
-    function updateClock() {
-      
-      let timer = getTimeRemaining();  
+    const updateClock = () => {      
+      const timer = getTimeRemaining();  
       if (timer.timeRemaining > 0) {
         timerDay.textContent = timer.day < 10 ? `0${timer.day}` : timer.day;
         if (timer.hours < 10) {                                                              // Не упрощённый вид
@@ -33,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         timerMinute.textContent = timer.minutes < 10 ? `0${timer.minutes}` : timer.minutes;  // Упрощённый вид
         timerSeconds.textContent = timer.seconds < 10 ? `0${timer.seconds}` : timer.seconds; // Упрощённый вид
       } else if (timer.timeRemaining <= 0) {       
-        let timerBlock = document.querySelector('#timer');
+        const timerBlock = document.querySelector('#timer');
         console.log('Время Вышло');
         timerDay.textContent = `00`;        // Обнуляем
         timerHours.textContent = `00`;      // Обнуляем
@@ -48,9 +47,81 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
           timerBlock.style.color = `red`;    // Мигание
         }, 2000);
       }
-    }
-    let timers = setInterval(updateClock, 1000);    
-  }
-  countTimer('11 september 2019 14:50:30');
+    };
+    const timers = setInterval(updateClock, 1000);    
+  };
+  countTimer('31 september 2019 14:50:30');
   //setInterval(countTimer, 1000, '26 november 2019');
+
+  // Меню
+  const toggleMenu = () => {
+    const btnMenu = document.querySelector('.menu'),    // Кнопка меню
+      menu = document.querySelector('menu'),            // Меню
+      closeBtn = document.querySelector('.close-btn'),  // Крестик
+      menuItems = menu.querySelectorAll('ul>li');           // Список меню
+    
+    const handlerMenu = () => {
+      /* if (!menu.style.transform || menu.style.transform === `translateX(-100%)`) {
+        menu.style.transform = `translateX(0)`;
+      } else {
+        menu.style.transform = `translateX(-100%)`;
+      }  */
+      menu.classList.toggle('active-menu');
+    };
+      // Бургер-кнопка  
+    btnMenu.addEventListener('click', handlerMenu);
+    // Крестик
+    closeBtn.addEventListener('click', handlerMenu);
+    // Клик по пункту меню
+    /* for (let i = 0; i < menuItems.length; i++) {
+      menuItems[i].addEventListener('click', handlerMenu);
+    } */
+    // упрощённый вид цикла
+    menuItems.forEach((elem) => {
+      elem.addEventListener('click', handlerMenu);
+    });
+  };
+  toggleMenu();
+
+  // Popup
+  const togglePopUp = () => {
+
+    const btnPopUp = document.querySelectorAll('.popup-btn'),    // кнопка
+      popup = document.querySelector('.popup'),               // Модальное окно
+      closePop = document.querySelector('.popup-close');
+      btnPopUp.forEach((elem) => {
+        elem.addEventListener('click', () => {
+          popup.style.display = 'block';
+        });
+      });
+
+      closePop.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+      
+
+  };
+  togglePopUp();
+
+  // Прозрачность
+  const opacityAnimation = (elem) => {
+    let opacity = 0;
+    elem.style
+    
+  };
+  opacityAnimation();
+
+  // Плавная прокрутка до якоря
+
+  const scroll = () => {
+    const anchors = document.querySelectorAll('[href*="#"]');
+
+    console.log(anchors);
+    
+
+
+  };
+  scroll();
+
+
 });
