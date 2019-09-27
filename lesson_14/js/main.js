@@ -87,8 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   const togglePopUp = () => {
 
     const btnPopUp = document.querySelectorAll('.popup-btn'),    // кнопка
-      popUp = document.querySelector('.popup'),               // Модальное окно
-      closePop = document.querySelector('.popup-close'); 
+      popUp = document.querySelector('.popup');                 // Модальное окно
       
     let width = screen.availWidth,
       opacity = 0,
@@ -109,18 +108,27 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         if (width >= 576) {
           popUp.style.display = `block`;
           popUp.style.opacity = '0';
-          time = setInterval(fade, 30);
-          
+          time = setInterval(fade, 30); 
         } else {
-          popUp.style.display = `block`;
+          popUp.style.display = `none`;
           popUp.style.opacity = '1'; 
         } 
 
       });
-      closePop.addEventListener('click', () => {
-        popUp.style.display = `none`;
-      });
-    }); 
+    });
+    
+    popUp.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.classList.contains('popup-close')) {
+        popUp.style.display = 'none';
+      } else {
+        target = target.closest('.popup-content');
+        if (!target) {
+          popUp.style.display = 'none';
+        }
+      }
+    });
     
   };
   togglePopUp();
@@ -171,5 +179,37 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   };
   scrollAnchors();
 
+  // Табы
+  const tabs = () => {
+    const tabHeader = document.querySelector('.service-header'),    // Блок с табами
+      tab = tabHeader.querySelectorAll('.service-header-tab'),      // Табы
+      tabContent = document.querySelectorAll('.service-tab');       // Контент
+
+    const toggleTabContent = (index) => {
+      for(let i = 0; i < tabContent.length; i++) {
+        if (index === i) {
+          tab[i].classList.add('active');
+          tabContent[i].classList.remove('d-none');
+        } else {
+          tab[i].classList.remove('active');
+          tabContent[i].classList.add('d-none');
+        }
+      }
+    };
+
+    tabHeader.addEventListener('click', (event) => {
+      let target = event.target;
+      target = target.closest('.service-header-tab');
+      
+        if (target) {    // Получаем элемент по которому кликнули
+          tab.forEach((item, i) => {
+            if (item === target) {
+              toggleTabContent(i);            
+            }
+          });
+        } 
+    });
+  };
+  tabs();
 
 });
