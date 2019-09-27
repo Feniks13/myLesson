@@ -93,7 +93,6 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
     let width = screen.availWidth,
       opacity = 0,
       time = 0;
-    console.log(width);
     // Прозрачность
     let fade = () => {
       if (opacity <= 1) {
@@ -103,19 +102,16 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         clearInterval(time);
         opacity = 0;
       }   
-    };
-    
+    };    
         
     btnPopUp.forEach((elem) => {
       elem.addEventListener('click', () => {
         if (width >= 576) {
-          console.log('Компьютер');
           popUp.style.display = `block`;
           popUp.style.opacity = '0';
           time = setInterval(fade, 30);
           
         } else {
-          console.log('Мобилка');
           popUp.style.display = `block`;
           popUp.style.opacity = '1'; 
         } 
@@ -130,17 +126,50 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   togglePopUp();
 
   
-  // Плавная прокрутка до якоря
+ // Плавный переход по якорю
+  const scrollAnchors = () => {
+    const anchors = document.querySelectorAll('a[href^="#"]'); // Все ссылки где есть #
+    // Перебираем массив
+    anchors.forEach((item) => {
+      // Отслеживаем событие click
+      item.addEventListener('click', (event) => {
+        // Сбрасываем стандартное поведение
+        event.preventDefault();
+        let target = event.target;
+        requestAnimationFrame(step);
 
-  const scroll = () => {
-    const anchors = document.querySelectorAll('[href*="#"]');
+        let speed = 0.23, // Скорость прокрутки
+          startScroll = window.pageYOffset, // Текущее положение скролла
+          myItem = item.getAttribute('href'), // DOM элемент
+          finishScroll = document.querySelector(myItem).getBoundingClientRect().top, // положение элемента по Y относительно окна браузера
+          start = null; // Тут будем считать затраченное время
 
-    //console.log(anchors);
-    
+        function step(time) {
+          // В первый кадр запомним время старта
+          if (start === null) {
+            start = time;
+          }
+          let progress = time - start, // Сколько прошло времени с начала анимации
+            nowScroll = null; // Текущее положение скролла
 
-
+          // Определяем текущее положение скрола по оси Y
+          if (finishScroll < 0) {
+            nowScroll = Math.max(startScroll - progress / speed, startScroll + finishScroll);
+          } else {
+            nowScroll = Math.min(startScroll + progress / speed, startScroll + finishScroll);
+          }
+          // Прокрутим скролл
+          window.scrollTo(0, nowScroll);
+          // Если прокрутка не окончина повторим шаг
+          if (nowScroll != startScroll + finishScroll) {
+            requestAnimationFrame(step); // Запланировать отрисовку следующего кадра
+          }
+        }
+        requestAnimationFrame(step);
+      });
+    });
   };
-  scroll();
+  scrollAnchors();
 
 
 });
