@@ -87,36 +87,55 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   const togglePopUp = () => {
 
     const btnPopUp = document.querySelectorAll('.popup-btn'),    // кнопка
-      popup = document.querySelector('.popup'),               // Модальное окно
-      closePop = document.querySelector('.popup-close');
-      btnPopUp.forEach((elem) => {
-        elem.addEventListener('click', () => {
-          popup.style.display = 'block';
-        });
-      });
-
-      closePop.addEventListener('click', () => {
-        popup.style.display = 'none';
-      });
+      popUp = document.querySelector('.popup'),               // Модальное окно
+      closePop = document.querySelector('.popup-close'); 
       
+    let width = screen.availWidth,
+      opacity = 0,
+      time = 0;
+    console.log(width);
+    // Прозрачность
+    let fade = () => {
+      if (opacity <= 1) {
+        opacity += 0.1;
+        popUp.style.opacity = opacity;
+      } else {
+        clearInterval(time);
+        opacity = 0;
+      }   
+    };
+    
+        
+    btnPopUp.forEach((elem) => {
+      elem.addEventListener('click', () => {
+        if (width >= 576) {
+          console.log('Компьютер');
+          popUp.style.display = `block`;
+          popUp.style.opacity = '0';
+          time = setInterval(fade, 30);
+          
+        } else {
+          console.log('Мобилка');
+          popUp.style.display = `block`;
+          popUp.style.opacity = '1'; 
+        } 
 
+      });
+      closePop.addEventListener('click', () => {
+        popUp.style.display = `none`;
+      });
+    }); 
+    
   };
   togglePopUp();
 
-  // Прозрачность
-  const opacityAnimation = (elem) => {
-    let opacity = 0;
-    elem.style
-    
-  };
-  opacityAnimation();
-
+  
   // Плавная прокрутка до якоря
 
   const scroll = () => {
     const anchors = document.querySelectorAll('[href*="#"]');
 
-    console.log(anchors);
+    //console.log(anchors);
     
 
 
