@@ -55,31 +55,25 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
 
   // Меню
   const toggleMenu = () => {
-    const btnMenu = document.querySelector('.menu'),    // Кнопка меню
-      menu = document.querySelector('menu'),            // Меню
-      closeBtn = document.querySelector('.close-btn'),  // Крестик
-      menuItems = menu.querySelectorAll('ul>li');           // Список меню
+    const menu = document.querySelector('menu'),            // Меню
+      body = document.querySelector('body');
     
-    const handlerMenu = () => {
-      /* if (!menu.style.transform || menu.style.transform === `translateX(-100%)`) {
-        menu.style.transform = `translateX(0)`;
-      } else {
-        menu.style.transform = `translateX(-100%)`;
-      }  */
-      menu.classList.toggle('active-menu');
-    };
-      // Бургер-кнопка  
-    btnMenu.addEventListener('click', handlerMenu);
-    // Крестик
-    closeBtn.addEventListener('click', handlerMenu);
-    // Клик по пункту меню
-    /* for (let i = 0; i < menuItems.length; i++) {
-      menuItems[i].addEventListener('click', handlerMenu);
-    } */
-    // упрощённый вид цикла
-    menuItems.forEach((elem) => {
-      elem.addEventListener('click', handlerMenu);
-    });
+    const handlerMenu = (event) => {
+      let target = event.target;
+
+      if (target.closest('.menu')) {
+        menu.classList.toggle('active-menu');        
+      } else if (target.closest('.close-btn')) {
+        menu.classList.toggle('active-menu');
+      } else if (target.closest('menu')) {
+        if (target.closest('a')) {
+          menu.classList.toggle('active-menu');
+        }        
+      } else {        
+        menu.classList.remove('active-menu');
+      }        
+    };      
+    body.addEventListener('click', handlerMenu);    
   };
   toggleMenu();
 
@@ -118,9 +112,9 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
     });
     
     popUp.addEventListener('click', (event) => {
-      let target = event.target;
+      let target = event.target;      
 
-      if (target.classList.contains('popup-close')) {
+      if (target.classList.contains('popup-close')) { 
         popUp.style.display = 'none';
       } else {
         target = target.closest('.popup-content');
