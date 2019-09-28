@@ -209,11 +209,31 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   // Слайдер
   const slider = () => {
     const slider = document.querySelector('.portfolio-content'),  // Слайдер
-      slide = document.querySelectorAll('.portfolio-item'),       // Все картинки
-      dot = document.querySelectorAll('.dot');                   // Точки
+      slide = document.querySelectorAll('.portfolio-item');       // Все картинки
   
+      
+      
     let currentSlide = 0,   // Номер слайда
-      interval;
+      interval,
+      dot;
+    // Добавление dot
+    const createDots = () => {
+      const dotsBlock = document.querySelector('.portfolio-dots');
+      let dots;
+      
+      for (let i = 0; i <= slide.length - 1; i++) {
+        console.log(i);
+        dots = document.createElement('li');  // Создаём li и помещаем в переменную
+        dots.classList.add('dot');            // Добавляем класс
+        if (i === 0) {
+          dots.classList.add('dot-active');   // В самом начале Первоме элементу добавляем класс
+        }
+        dotsBlock.appendChild(dots);      // Вставляем в конец элемента
+      }
+      dot = document.querySelectorAll('.dot');
+      
+    };
+    createDots();
     // PREV
     const prevSlide = (elem, index, strClass) => {
       elem[index].classList.remove(strClass);
