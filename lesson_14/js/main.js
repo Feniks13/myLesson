@@ -206,4 +206,95 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   };
   tabs();
 
+  // Слайдер
+  const slider = () => {
+    const slider = document.querySelector('.portfolio-content'),  // Слайдер
+      slide = document.querySelectorAll('.portfolio-item'),       // Все картинки
+      dot = document.querySelectorAll('.dot');                   // Точки
+  
+    let currentSlide = 0,   // Номер слайда
+      interval;
+    // PREV
+    const prevSlide = (elem, index, strClass) => {
+      elem[index].classList.remove(strClass);
+    };
+    // NEXT
+    const nextSlide = (elem, index, strClass) => {
+      elem[index].classList.add(strClass);
+    };
+    
+    // Автопролистывание
+    const autoPlaySlide = () => {
+
+      prevSlide(slide, currentSlide, 'portfolio-item-active');
+      //slide[currentSlide].classList.remove('portfolio-item-active');  // У текущего слайда удаляем класс
+      prevSlide(dot, currentSlide, 'dot-active');
+      currentSlide++;                                                 // Увеличиваем номер слайда на 1
+      if (currentSlide >= slide.length) {
+        currentSlide = 0;
+      }
+      nextSlide(slide, currentSlide, 'portfolio-item-active');
+      //slide[currentSlide].classList.add('portfolio-item-active');     // + Класс к текущему слайду
+      nextSlide(dot, currentSlide, 'dot-active');
+    };
+
+    const startSlide = (time = 3000) => {
+      interval = setInterval(autoPlaySlide, time);
+    };
+
+    const stopSlide = () => {
+      clearInterval(interval);
+    };
+
+    slider.addEventListener('click', (event) => {
+      event.preventDefault();   // Сбрасываем стандартнок поведение
+    
+      let target = event.target;
+
+      if (!target.matches('.portfolio-btn, .dot')) {  //  Если не попадаем по кнопкам и точкам
+        return;                                       // Возвращаем ничего не присваивая
+      }
+      prevSlide(slide, currentSlide, 'portfolio-item-active');
+      prevSlide(dot, currentSlide, 'dot-active');
+
+      if (target.matches('#arrow-right')) {   // Если цель события #arrow-right
+        currentSlide++;
+      } else if (target.matches('#arrow-left')) {
+        currentSlide--;
+      } else if (target.matches('.dot')) {   // Если кликнули по точке 
+        dot.forEach((elem, index) => {
+          if (elem === target) {
+            currentSlide = index;
+          }
+        });
+      }
+
+      if (currentSlide >= slide.length) {
+        currentSlide = 0;
+      } else if (currentSlide < 0) {
+        currentSlide = slide.length - 1;
+      }
+
+      nextSlide(slide, currentSlide, 'portfolio-item-active');
+      nextSlide(dot, currentSlide, 'dot-active');
+
+    });
+
+    slider.addEventListener('mouseover', (event) => {    // Если навели мышку
+      if (event.target.matches('.portfolio-btn') || event.target.matches('.dot')) {
+        stopSlide();
+      }
+    });
+    slider.addEventListener('mouseout', (event) => {
+      if (event.target.matches('.portfolio-btn') || event.target.matches('.dot')) {
+        startSlide();
+      }
+    });
+
+
+    startSlide(1500);
+  
+  };
+  slider();
+
 });
