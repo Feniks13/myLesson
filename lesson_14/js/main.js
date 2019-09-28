@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
       body = document.querySelector('body');
     
     const handlerMenu = (event) => {
-      let target = event.target;
+      let target = event.target; 
 
       if (target.closest('.menu')) {
         menu.classList.toggle('active-menu');        
