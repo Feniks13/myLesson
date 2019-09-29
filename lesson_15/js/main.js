@@ -330,4 +330,20 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   };
   setData();
 
+  // Валидация в калькуляторе
+  const validate = () => {
+    const calcBlock = document.querySelector('.calc-block'),  // Блок с калькулятором
+      calcItem = calcBlock.querySelectorAll('input');  
+    calcItem.forEach((elem) => {
+      elem.setAttribute('type', 'text');
+      elem.addEventListener('input', (e) => {
+        let target = event.target;          
+        target.value = target.value.replace(/\D/g, '');        
+      });
+    });
+  };
+  validate();
+
+
+
 });
