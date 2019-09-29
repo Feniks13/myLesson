@@ -126,7 +126,6 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
     
   };
   togglePopUp();
-
   
  // Плавный переход по якорю
   const scrollAnchors = () => {
@@ -211,8 +210,6 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
     const slider = document.querySelector('.portfolio-content'),  // Слайдер
       slide = document.querySelectorAll('.portfolio-item');       // Все картинки
   
-      
-      
     let currentSlide = 0,   // Номер слайда
       interval,
       dot;
@@ -222,7 +219,6 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
       let dots;
       
       for (let i = 0; i <= slide.length - 1; i++) {
-        console.log(i);
         dots = document.createElement('li');  // Создаём li и помещаем в переменную
         dots.classList.add('dot');            // Добавляем класс
         if (i === 0) {
@@ -316,5 +312,22 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   
   };
   slider();
+
+  // Замена картинок в блоке Наша команда
+  const setData = () => {
+    const commandPhoto = document.querySelectorAll('.command__photo');
+    commandPhoto.forEach((elem, item) => { 
+      let imgNow = elem.src;
+      elem.addEventListener('mouseenter', (event) => {
+        let target = event.target;
+        target.src = target.dataset.img;
+      });
+      elem.addEventListener('mouseleave', () => {
+        let target = event.target;
+        target.src = imgNow;
+      });
+    });
+  };
+  setData();
 
 });
