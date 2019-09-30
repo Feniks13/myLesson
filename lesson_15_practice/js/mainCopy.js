@@ -64,7 +64,7 @@ console.log(/^привет$/.test('привет друзья'));   // False */
 // Все буквы
 //const result = string.match(/\D/g);
 
-// Все символы кроме цифр или букв
+// Все символы кроме цифр или букв "^"
 //const result = string.match(/[^0-9]/g);
 //const result = string.match(/[^А-Яа-яЁё]/g);
 

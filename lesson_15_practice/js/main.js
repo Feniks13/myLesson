@@ -341,6 +341,12 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         target.value = target.value.replace(/\D/g, '');        
       });
     });
+
+    let str = 'seven', 
+      result = str.match(/[^h]([aeiou])v\1.+/);
+
+    console.log(result);
+    
   };
   validate();
 
