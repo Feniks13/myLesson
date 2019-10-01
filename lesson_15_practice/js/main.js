@@ -50,7 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
     };
     const timers = setInterval(updateClock, 1000);    
   };
-  countTimer('31 september 2019 14:50:30');
+  countTimer('15 octaber 2019 14:50:30');
   //setInterval(countTimer, 1000, '26 november 2019');
 
   // Меню
@@ -359,7 +359,21 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         total = price * typeValue * squareValue * countValue * dayValue;
       }
 
-      totalValue.textContent = total;
+     // Эффект перечисления чисел 
+      let countTotal = totalValue.textContent;
+      const calcInterval = () => {
+        if (total > countTotal) {
+          countTotal++;
+        } else if (total < countTotal) {
+          countTotal--;
+        }else {
+          clearInterval(calcTimer);
+        }
+        totalValue.textContent = countTotal;
+      };      
+
+      let calcTimer = setInterval(calcInterval);
+      
     };
       
     calcBlock.addEventListener('change', (event) => {
@@ -371,7 +385,6 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
       if (target.matches('input') || target.matches('select')) {
         countSum(); 
       }
-
     }); 
   
     // Валидация в калькуляторе
