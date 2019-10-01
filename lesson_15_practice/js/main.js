@@ -306,8 +306,6 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         startSlide();
       }
     });
-
-
     startSlide(1500);
   
   };
@@ -328,28 +326,66 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
       });
     });
   };
-  setData();
+  setData();  
 
-  // Валидация в калькуляторе
-  const validate = () => {
-    const calcBlock = document.querySelector('.calc-block'),  // Блок с калькулятором
-      calcItem = calcBlock.querySelectorAll('input');  
-    calcItem.forEach((elem) => {
-      elem.setAttribute('type', 'text');
-      elem.addEventListener('input', (e) => {
-        let target = event.target;          
-        target.value = target.value.replace(/\D/g, '');        
-      });
-    });
+  // Калькулятор
+  const calculator = (price = 100) => {
+    const calcBlock = document.querySelector('.calc-block'),
+      calcItem = calcBlock.querySelectorAll('input'), 
+      calcSquare = document.querySelector('.calc-square'),
+      calcCount = document.querySelector('.calc-count'),
+      calcDay = document.querySelector('.calc-day'),
+      calcType = document.querySelector('.calc-type'),
+      totalValue = document.getElementById('total');
 
-    let str = 'seven', 
-      result = str.match(/[^h]([aeiou])v\1.+/);
+    const countSum = () => {
+      let total = 0,
+      countValue = 1,
+      dayValue = 1;
+      const typeValue = calcType.options[calcType.selectedIndex].value,   // Значение value у select
+        squareValue = +calcSquare.value;     // Площадь
+      
+      if (calcCount.value > 1) {
+        countValue += (calcCount.value - 1) / 10;
+      }
 
-    console.log(result);
-    
+      if (calcDay.value && calcDay.value < 5) {
+        dayValue *= 2;
+      } else if (calcDay.value && calcDay.value < 10) {
+        dayValue *= 1.5;
+      }
+
+      if (typeValue && squareValue) {
+        total = price * typeValue * squareValue * countValue * dayValue;
+      }
+
+      totalValue.textContent = total;
+    };
+      
+    calcBlock.addEventListener('change', (event) => {
+      const target = event.target;
+      /* if (target === calcSquare || target === calcCount || target === calcDay || target === calcType) {
+          console.log(1);          
+        } */
+
+      if (target.matches('input') || target.matches('select')) {
+        countSum(); 
+      }
+
+    }); 
+  
+    // Валидация в калькуляторе
+    const validate = () => {
+      calcItem.forEach((elem) => {
+        elem.setAttribute('type', 'text');
+        elem.addEventListener('input', (e) => {
+          let target = event.target;          
+          target.value = target.value.replace(/\D/g, '');        
+        });
+      });  
+    };
+    validate();
   };
-  validate();
-
-
+  calculator(100);
 
 });
