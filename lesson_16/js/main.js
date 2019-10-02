@@ -393,7 +393,7 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
         elem.setAttribute('type', 'text');
         elem.addEventListener('input', (e) => {
           let target = event.target;          
-          target.value = target.value.replace(/\D/g, '');        
+          target.value = target.value.replace(/\D/g, ''); // Запрещаем ввод букв и заменяем на пустую строку       
         });
       });  
     };
