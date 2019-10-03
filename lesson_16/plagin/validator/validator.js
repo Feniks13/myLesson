@@ -115,7 +115,7 @@ class Validator {
       this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
     }
     if (!this.pattern.email) {
-      this.pattern.email = /^[.a-z0-9_-]+@[а-яА-Яa-z0-9-]+\.[а-яА-Яa-zA-Z]{2,6}$/i;
+      this.pattern.email = /^\w+\@\w+\.\w{2,}$/;
     }
     
   }
