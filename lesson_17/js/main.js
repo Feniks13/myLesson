@@ -419,36 +419,42 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       form.appendChild(statusMessage);      // Добавляем элемент
-
-      const request = new XMLHttpRequest();   // Создаём объект
-
-      request.addEventListener('readystatechange', () => {
-        statusMessage.textContent = loadMessage;    // Выводим поле Загрузка
-
-        if (request.readyState !== 4) {             // Если при отправке ошибка
-          return;
-        }
-        if (request.status === 200) {
-          statusMessage.textContent = successMessage;
-        } else {
-          statusMessage.textContent = errorMessage;
-        }
-      });
-
-      request.open('POST', './server.php');                             // Куда будет отправка
-      request.setRequestHeader('Content-Type', 'application/json');  // Заголовок формы
+      statusMessage.textContent = loadMessage;    // Выводим поле Загрузка
       const formData = new FormData(form);
       let body = {};
-
       /* for (let val of formData.entries()) {
         body[val[0]] = val[1];        
       } */
       formData.forEach((val, key) => {
         body[key] = val;
       });
+      postData(body, () => {
+        statusMessage.textContent = successMessage;
+      }, (error) => {
+        statusMessage.textContent = errorMessage;
+        console.errar(error);
+      });      
+    });
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();   // Создаём объект
+
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) {             // Если при отправке ошибка
+          return;
+        }
+        if (request.status === 200) {
+          outputData();          
+        } else {
+          errorData(request.status);  
+        }
+      });
+      request.open('POST', './server.php');                             // Куда будет отправка
+      request.setRequestHeader('Content-Type', 'application/json');  // Заголовок формы
+            
       request.send(JSON.stringify(body));                           // Отправляем данные     
 
-    });
+    };
   };
   sendForm();
 
