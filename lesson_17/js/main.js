@@ -314,13 +314,13 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   // Замена картинок в блоке Наша команда
   const setData = () => {
     const commandPhoto = document.querySelectorAll('.command__photo');
-    commandPhoto.forEach((elem, item) => { 
+    commandPhoto.forEach((elem) => { 
       let imgNow = elem.src;
       elem.addEventListener('mouseenter', (event) => {
         let target = event.target;
         target.src = target.dataset.img;
       });
-      elem.addEventListener('mouseleave', () => {
+      elem.addEventListener('mouseleave', (event) => {
         let target = event.target;
         target.src = imgNow;
       });
@@ -402,61 +402,64 @@ window.addEventListener('DOMContentLoaded', () => {           // Ждём заг
   calculator(100);
 
   // send-ajax-form
-  const sendForm = () => {
-    const errorMessage = 'Что то пошло не так...',
-      loadMessage = 'Загрузка...',
-      successMessage = 'Спасибо! Мы скоро с вами свяжимся!',
-      form = document.getElementById('form1'),
-      statusMessage = document.createElement('div');
+  const sendForm = (wind) => {
+    // const errorMessage = 'Что-то пошло не так...',
+    //     loadMessage = 'Загрузка...',
+    //     successMessage = 'Спасибо!';
 
-    statusMessage.textContent = 'Здесь Наше сообщение!!!';
-    statusMessage.style.cssText = `font-size: 2rem; 
-    border: 2px solid;
-    border-radius: 6px;
-    display: inline-block;
-    padding: 6px 12px`;
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      form.appendChild(statusMessage);      // Добавляем элемент
-      statusMessage.textContent = loadMessage;    // Выводим поле Загрузка
-      const formData = new FormData(form);
-      let body = {};
-      /* for (let val of formData.entries()) {
-        body[val[0]] = val[1];        
-      } */
-      formData.forEach((val, key) => {
-        body[key] = val;
-      });
-      postData(body, () => {
-        statusMessage.textContent = successMessage;
-      }, (error) => {
-        statusMessage.textContent = errorMessage;
-        console.errar(error);
-      });      
+    const form = document.querySelector(wind);
+    const inp = document.querySelectorAll('input[type="text"], .mess');
+    inp.forEach(elem =>{
+        elem.addEventListener('input', (event) => {
+            let target = event.target;
+            target.value = target.value.replace(/[A-Za-z0-9./,'"!&?*%]+/, '');
+        });
     });
+    
+    const statusMessage = document.createElement('div');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        form.appendChild(statusMessage);
+        statusMessage.style.color = `#fff`;
+        statusMessage.innerHTML = `<img style='width: 50px; height: 50px;' src='./images/imgs/loading.gif'>`;
 
+        const formData = new FormData(form);
+        let body = {};
+        formData.forEach((val, key) =>{
+            body[key] = val;
+        });
+        postData(body, () => {
+            statusMessage.innerHTML = `<img style='width: 50px; height: 50px;' src='./images/imgs/okey.png'>`;
+        }, (error) => {
+            statusMessage.innerHTML = `<img style='width: 50px; height: 50px;' src='./images/imgs/error.png>`;
+            console.error(error);
+        });
+        for (let key of form.elements){
+            if (key.type != 'submit'){
+                key.value = '';
+            }
+        }
+    });
     const postData = (body, outputData, errorData) => {
-      const request = new XMLHttpRequest();   // Создаём объект
-
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {             // Если при отправке ошибка
-          return;
-        }
-        if (request.status === 200) {
-          outputData();          
-        } else {
-          errorData(request.status);  
-        }
-      });
-      request.open('POST', './server.php');                             // Куда будет отправка
-      request.setRequestHeader('Content-Type', 'application/json');  // Заголовок формы
-            
-      request.send(JSON.stringify(body));                           // Отправляем данные     
-
+        const request = new XMLHttpRequest();
+        request.addEventListener('readystatechange', () => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                outputData();
+            } else {
+                errorData(request.status); 
+            }
+        });
+        request.open('POST', './server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(body));
     };
-  };
-  sendForm();
+};
+sendForm('#form1');
+sendForm('#form2');
+sendForm('#form3');
 
 
 
