@@ -74,15 +74,13 @@
       <div class="main-form-input container">
         <div class="row">
           <div class="col-12 col-lg-4">
-            <input type="text" class="form-name" id="form1-name" name="user_name" placeholder="Ваше имя" id="name1"
-              required>
+            <input type="text" class="form-name" id="form1-name" name="user_name" placeholder="Ваше имя" id="name1">
           </div>
           <div class="col-12 col-lg-4">
             <input type="email" class="form-email" id="form1-email" name="user_email" placeholder="E-mail">
           </div>
           <div class="col-12 col-lg-4">
-            <input type="tel" class="form-phone" id="form1-phone" name="user_phone" placeholder="Номер телефона"
-              required>
+            <input type="tel" class="form-phone" id="form1-phone" name="user_phone" placeholder="Номер телефона">
           </div>
         </div>
       </div>
@@ -401,7 +399,7 @@
         <h3>Введите свои данные для связи с нами!</h3>
         <form id="form3" name="user_form">
           <div>
-            <input type="text" class="form-name" id="form3-name" name="user_name" placeholder="Ваше имя" required>
+            <input type="text" class="form-name" id="form3-name" name="user_name" placeholder="Ваше имя">
           </div>
           <div>
             <input type="tel" class="form-phone" id="form3-phone" name="user_phone" placeholder="Ваш номер телефона"
@@ -416,15 +414,18 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="./js/main.js"></script>
   <!-- <script src="js/mainCopy.js"></script> -->
-  <script src="plagin/validator/validator.js"></script>
+  <script src="./plagin/validator/validator.js"></script>
   <script>
     
     //Иннициализируем
     const valid1 = new Validator({ // Создаём объект на основе валидатора
       selector: '#form1',
-      pattern: {},
+      pattern: {
+        //phone: /^\+380\d{7}$/,
+        zip: /\d{5,6}/
+      },
       method: {
         'form1-phone': [
           ['notEmpty'],
@@ -436,17 +437,19 @@
         ],
         'form1-name': [
           ['notEmpty'],
-          ['pattern', 'name']
+          ['pattern', 'text']
         ]
-      }
-      
-    })
+      }      
+    });
     // Запускаем валидатор
-    valid1.init();
+    //valid1.init();
     
     const valid2 = new Validator({ // Создаём объект на основе валидатора
       selector: '#form2',
-      pattern: {},
+      pattern: {
+        //phone: /^\+380\d{7}$/,
+        zip: /\d{5,6}/
+      },
       method: {
         'form2-phone': [
           ['notEmpty'],
@@ -458,17 +461,19 @@
         ],
         'form2-name': [
           ['notEmpty'],
-          ['pattern', 'name']
+          ['pattern', 'text']
         ]
-      }
-      
-    })
+      }      
+    });
     // Запускаем валидатор
-    valid2.init();
+    //valid2.init();
 
     const valid3 = new Validator({ // Создаём объект на основе валидатора
       selector: '#form3',
-      pattern: {},
+      pattern: {
+        //phone: /^\+380\d{7}$/,
+        zip: /\d{5,6}/
+      },
       method: {
         'form3-phone': [
           ['notEmpty'],
@@ -480,13 +485,12 @@
         ],
         'form3-name': [
           ['notEmpty'],
-          ['pattern', 'name']
+          ['pattern', 'text']
         ]
-      }
-      
-    })
+      }      
+    });
     // Запускаем валидатор
-    valid3.init();
+    //valid3.init();
   </script>
 </body>
 

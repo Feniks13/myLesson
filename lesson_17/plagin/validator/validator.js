@@ -95,10 +95,10 @@ class Validator {
     const style = document.createElement('style');
     style.textContent = `
       input.success {
-        border: 2px solid green
+        border: 2px solid green !important
       }
       input.error {
-        border: 2px solid red
+        border: 2px solid red !important
       }
       .validator-error {
         font-size: 12px;
@@ -117,8 +117,8 @@ class Validator {
     if (!this.pattern.email) {
       this.pattern.email = /^\w+\@\w+\.\w{2,}$/;
     }
-    if (!this.pattern.name) {
-      this.pattern.name = /[А-Яа-яЁё]$/ig;
+    if (!this.pattern.text) {
+      this.pattern.text = /^[^A-Za-z]+$/;
     }
     
   }
